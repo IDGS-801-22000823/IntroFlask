@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Document</title>
+
+    <style>
+
+        body {
+            /*background-image: url("../img/cinepolis.jpg"); no jala :c*/
+            background-image: url("{{ url_for('static', filename='img/cinepolis.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #ffffff;
+            padding: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .contenedor {
+            display: flex;
+            gap: 275px;
+            margin-bottom: 70px;
+        }
+        .mi-div {
+            border: 2px solid #817b7b;
+            padding: 20px;
+            margin-left: 50px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .mi-div2 {
+            border: 2px solid #817b7b;
+            padding: 20px;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+            width: 50%;
+        }        
+        label {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 3px;
+            text-align: center;
+        }
+        input[type="text"], input[type="number"] {
+            width: 200px;
+            padding: 5px;
+            margin-bottom: 3px;
+            text-align: center;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            color: #000000;
+            display: block;
+            margin: 0 auto;
+        }
+        h1, h3 {
+            text-align: center;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Cinepolis</h1>
+
+    <form action="/cinepolis" method="post">
+        <div class="contenedor">
+            <div class="mi-div">
+                <h3>Entradas</h3>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required><br>
+                <label for="compra">Cantidad compradores:</label>
+                <input type="number" id="compra" name="compra" required><br>
+                <label for="tarjeta">Tarjeta Cineco:</label>
+                <input type="radio" id="si" name="tarjeta" value="si">
+                <label for="si">Si</label>
+                <input type="radio" id="no" name="tarjeta" value="no" checked>
+                <label for="no">No</label><br>
+                <label for="boletos">Cantidad boletos:</label>
+                <input type="number" id="boletos" name="boletos" required><br><br>
+            </div>
+        
+            <div class="mi-div">
+                <h3>Salidas</h3>
+                <label for="valor">Valor a pagar:</label>
+                <input type="text" id="resultado" name="resultado" value="{{ resultado }}" readonly><br>
+            </div>
+        </div>
+        
+        <div class="mi-div2">
+            <h3>Acciones</h3>
+            <input type="submit" value="Procesar">
+        </div>
+    </form>
+</body>
+</html>

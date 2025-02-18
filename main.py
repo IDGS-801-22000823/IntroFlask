@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from datetime import datetime
 
 app=Flask(__name__)
 
@@ -125,6 +126,36 @@ def cinepolis():
     return render_template("cinepolis.html", resultado=resultado)
 
 
+@app.route("/zodiaco", methods=["GET", "POST"])
+def zodiaco():
+    resultado = ""
+    imagen_zodiaco = ""
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        paterno = request.form["paterno"]
+        materno = request.form["materno"]
+        dia = int(request.form["dia"])
+        mes = int(request.form["mes"])
+        ano = int(request.form["ano"])
+        #paraedad
+        hoy = datetime.now()
+        fecha_nacimiento = datetime(ano, mes, dia)
+        edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+        #signo del zodiacal
+        signos_chinos = ["mono", "gallo", "perro", "cerdo", "rata", "buey", "tigre", "conejo", "dragon", "serpiente", "caballo", "cabra"]
+        indice = ano % 12
+        signo = signos_chinos[indice]
+        #La respuesta de la respuesta = respuesta 
+        imagen_zodiaco = f"{signo}.jpg"
+
+    return render_template("zodiaco.html",nombre=nombre,paterno=paterno,materno=materno,edad=edad,signo=signo,imagen_zodiaco=imagen_zodiaco)
+
+
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)

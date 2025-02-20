@@ -1,0 +1,21 @@
+{% extends "layout2.html" %}
+{% block content%}
+
+{% import "_macros.html" as macro %}
+
+<form action="/Alumnos" method="POST">
+    
+    {{macro.camposNuevos(form.mat)}}
+    {{macro.camposNuevos(form.nom)}}
+    {{macro.camposNuevos(form.ap)}}
+    {{macro.camposNuevos(form.correo)}}
+    <input type="submit" name="btn1" value="Guardar" class="btn btn-primary">
+
+</form>
+
+<h2>Matricula: {{mat}}</h2>
+<h2>Nombre: {{nom}}</h2>
+<h2>Apellido: {{ap}}</h2>
+<h2>Correo: {{correo}}</h2>
+
+{% endblock %}  

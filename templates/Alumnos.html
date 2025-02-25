@@ -3,7 +3,9 @@
 
 {% import "_macros.html" as macro %}
 
-<form action="/Alumnos" method="POST">
+<form action="/Alumnos" method="POST" novalidate>
+    {{form.csrf_token}}
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>
     
     {{macro.camposNuevos(form.mat)}}
     {{macro.camposNuevos(form.nom)}}

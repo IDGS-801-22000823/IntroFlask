@@ -5,6 +5,7 @@
 
 {%endmacro%}
 
+
 {% macro camposNuevos(field)%}
 <td>{{field.label}}</td>
 <dd>{{field(**kwargs) | safe}}</dd>
@@ -17,4 +18,33 @@
 </ul>
 {%endif%}
 
+{% endmacro %}
+
+
+{% macro zodiaco(field=None, name="", placeholder="", type="text", value="", label="", checked=False) %}
+    {% if field %}
+        <!--Para los que se validan asi chido-->
+        <label for="{{ field.id }}">{{ field.label.text }}:</label>
+        <p>
+            {{ field(placeholder=placeholder, **kwargs) | safe }}
+            {% if field.errors %}
+                <ul>
+                    {% for error in field.errors %}
+                        <li style="color: red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+    {% else %}
+        <!--Para los que no se validan asi chido-->
+        {% if type == "radio" %}
+            <input type="radio" id="{{ name }}_{{ value }}" name="{{ name }}" value="{{ value }}" {% if checked %}checked{% endif %}>
+            <label for="{{ name }}_{{ value }}">{{ label }}</label><br>
+        {% else %}
+            <label for="{{ name }}">{{ label if label else name }}:</label>
+            <p>
+                <input name="{{ name }}" type="{{ type }}" placeholder="{{ placeholder }}">
+            </p>
+        {% endif %}
+    {% endif %}
 {% endmacro %}

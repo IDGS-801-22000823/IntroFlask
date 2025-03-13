@@ -1,0 +1,51 @@
+{% extends "layout2.html" %}
+
+{% block content %}
+
+{% import "_macros.html" as macro %}
+
+<link rel="stylesheet" href="../static/css/zodiaco.css">
+
+<div class="contenedor-principal">
+    
+    <div class="formulario">
+        <form action="/zodiacos" method="post" novalidate>
+
+            {{form.csrf_token}}
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>
+
+            <div class="mi-div">
+                <h1 style="text-align: center;" >Datos personales</h1>
+                
+                {{ macro.zodiaco(field=form.nombre, placeholder="Introduce tu nombre") }}
+                {{ macro.zodiaco(field=form.paterno, placeholder="Introduce tu apellido paterno") }}
+                {{ macro.zodiaco(field=form.materno, placeholder="Introduce tu apellido materno") }}
+                <h5>Fecha de nacimiento</h5>
+                {{ macro.zodiaco(field=form.dia, placeholder="Introduce tu día de nacimiento", type="number") }}
+                {{ macro.zodiaco(field=form.mes, placeholder="Introduce tu mes de nacimiento", type="number") }}
+                {{ macro.zodiaco(field=form.anio, placeholder="Introduce tu año de nacimiento", type="number") }}
+
+                <label for="sexo">Sexo:</label>
+                {{ macro.zodiaco(name="sexo", label="Masculino", value="masculino", type="radio", checked=True) }}
+                {{ macro.zodiaco(name="sexo", label="Femenino", value="femenino", type="radio") }}
+                <!--<input type="radio" id="masculino" name="sexo" value="masculino"> Masculino <br>
+                <input type="radio" id="femenino" name="sexo" value="femenino" checked> Femenino-->
+
+                <input type="submit" value="Imprimir">
+            </div>
+        </form>
+    </div>
+
+
+    <div class="resultado">
+        {% if nombre and paterno and materno and edad and signo %}
+        <h2>Hola {{ nombre }} {{ paterno }} {{ materno }}</h2>
+        <h3>Tienes {{ edad }} años</h3>
+        <h3>Tu signo zodiacal es {{ signo }}</h3>
+        {% if imagen_zodiaco %}
+        <img src="{{ url_for('static', filename='img/' + imagen_zodiaco) }}" alt="{{ signo }}">
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}  

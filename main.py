@@ -4,6 +4,7 @@ from flask_wtf.csrf import CSRFProtect
 from datetime import datetime
 from flask import g
 from flask import flash
+import zodiaco
 
 
 app=Flask(__name__)
@@ -148,30 +149,55 @@ def cinepolis():
 
     return render_template("cinepolis.html", resultado=resultado)
 
-
-@app.route("/zodiaco", methods=["GET", "POST"])
-def zodiaco():
-    resultado = ""
+#ZODIACO CHINO
+@app.route("/zodiacos", methods=["GET", "POST"])
+def zodiacos():
+    
+    nombre = ""
+    paterno = ""
+    materno = ""
+    edad = 0
+    signo = ""
     imagen_zodiaco = ""
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        paterno = request.form["paterno"]
-        materno = request.form["materno"]
-        dia = int(request.form["dia"])
-        mes = int(request.form["mes"])
-        ano = int(request.form["ano"])
-        #paraedad
-        hoy = datetime.now()
-        fecha_nacimiento = datetime(ano, mes, dia)
-        edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
-        #signo del zodiacal
-        signos_chinos = ["mono", "gallo", "perro", "cerdo", "rata", "buey", "tigre", "conejo", "dragon", "serpiente", "caballo", "cabra"]
-        indice = ano % 12
-        signo = signos_chinos[indice]
-        #La respuesta de la respuesta = respuesta 
-        imagen_zodiaco = f"{signo}.jpg"
 
-    return render_template("zodiaco.html",nombre=nombre,paterno=paterno,materno=materno,edad=edad,signo=signo,imagen_zodiaco=imagen_zodiaco)
+    zodiaco_clas = zodiaco.UserForm(request.form)
+
+    if request.method == "POST" and zodiaco_clas.validate():
+
+        nombre = zodiaco_clas.nombre.data
+        paterno = zodiaco_clas.paterno.data
+        materno = zodiaco_clas.materno.data
+        dia = zodiaco_clas.dia.data
+        mes = zodiaco_clas.mes.data
+        anio = zodiaco_clas.anio.data
+
+        mensaje = f"Gracias {nombre} por usar nuestra página ;3"
+        flash(mensaje)
+
+        # edad
+        hoy = datetime.now()
+        fecha_nacimiento = datetime(anio, mes, dia)
+        edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+
+        # signo zodiacal
+        signos_chinos = ["mono", "gallo", "perro", "cerdo", "rata", "buey", "tigre", "conejo", "dragon", "serpiente", "caballo", "cabra"]
+        indice = anio % 12
+        signo = signos_chinos[indice]
+
+        # Imagen
+        imagen_zodiaco = f"{signo}.jpg"
+        print(f"Signo: {signo}, Imagen: {imagen_zodiaco}")
+
+    return render_template(
+        "zodiacos.html",
+        form=zodiaco_clas,
+        nombre=nombre,
+        paterno=paterno,
+        materno=materno,
+        edad=edad,
+        signo=signo,
+        imagen_zodiaco=imagen_zodiaco
+    )
 
 @app.route("/Alumnos", methods = ["GET" , "POST"])
 def alumnos():
